@@ -1,6 +1,8 @@
 import os 
 import stat 
 import glob
+import logging
+from shutil import copyfile
 
 from models.lo import LearningObject as los
 
@@ -60,3 +62,42 @@ def reapLoType(pattern, parent, locreator):
     return los
 
 def findTopLos(los, lotype):
+    for lo in los: 
+        if lo.lotype == lotype:
+            los.append(lo)
+    return los
+
+def findLos(los, lotype):
+    for lo in los:
+        if lo.lotype == lotype:
+            los.append(lo)
+        elif isinstance(Topic, lo):
+            result = result.concat(findLos(lo.los, lotype))
+        elif isinstance(Unit, lo):
+            result = result.concat(findLos(lo.los, lotype))
+    return result
+
+def findTalksWithVideos(los, lotype):
+    for lo in los:
+        if lo.type == 'talk':
+            talk = lo.Talk
+            if talk.videoid != 'none':
+                los.append(lo)
+        if isinstance(Topic, los):
+            result = result.concat(findTalksWithVideos(lo.los))
+    return result
+
+def publishLos(string, los):
+    for lo in los:
+        logging.info(' -->', lo.title)
+        los.append(lo)
+
+def copyResource():
+    dest = dest + '/' + src 
+    os.mkdir('-p', dest)
+    copyfile('-rf', src + '/*.pdf', dest)
+    copyfile('-rf', src + '/*.zip', dest)
+    copyfile('-rf', src + '/*.png', dest)
+    copyfile('-rf', src + '/*.jpg', dest)
+    copyfile('-rf', src + '/*.jpeg', dest)
+    copyfile('-rf', src + '/*.gif', dest)
