@@ -3,7 +3,7 @@ import stat
 import glob
 import logging
 from shutil import copyfile
-
+from models.topic import Topic
 from models.lo import LearningObject as los
 
 
