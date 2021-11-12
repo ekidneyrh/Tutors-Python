@@ -82,14 +82,15 @@ def findLos(los, lotype):
             result = result.append(findLos(lo.los, lotype))
     return result
 
-def findTalksWithVideos(los, lotype):
+def findTalksWithVideos(los):
+    result = list()
     for lo in los:
-        if lo.type == 'talk':
-            talk = lo.Talk
-            if talk.videoid != 'none':
-                los.append(lo)
-        if isinstance(Topic, los):
-            result = result.concat(findTalksWithVideos(lo.los))
+        if lo.lotype is 'talk':
+            talk = lo
+            if talk.videoid is not 'none':
+                result.append(lo)
+        if isinstance(los, Topic):
+            result = result.append(findTalksWithVideos(lo.los))
     return result
 
 def publishLos(string, los):
