@@ -2,10 +2,11 @@ import os
 import stat 
 import glob
 import shutil
-from models.lab import Lab as lab
+import logging
+from models.lab import Lab
 from models.topic import Topic, Unit
-from models.lo import LearningObject as lo
-from models.course import Course as course
+from models.lo import LearningObject
+from models.course import Course
 from models.los import Archive, PanelTalk, Talk
 from models.weblos import Git, PanelVideo, Video, Web
 
@@ -90,7 +91,7 @@ def findTalksWithVideos(los):
             if talk.videoid is not 'none':
                 result.append(lo)
         if isinstance(los, Topic):
-            result = result.append(findTalksWithVideos(lo.los))
+            result = result.(findTalksWithVideos(lo.los))
     return result
 
 def publishLos(string, los):
