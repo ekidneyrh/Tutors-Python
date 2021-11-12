@@ -72,13 +72,14 @@ def findTopLos(los, objType):
     return result
 
 def findLos(los, lotype):
+    result = list()
     for lo in los:
-        if lo.lotype == lotype:
-            los.append(lo)
-        elif isinstance(Topic, lo):
-            result = result.concat(findLos(lo.los, lotype))
-        elif isinstance(Unit, lo):
-            result = result.concat(findLos(lo.los, lotype))
+        if lo.lotype is lotype:
+            result.append(lo)
+        elif isinstance(lo, Topic):
+            result = result.append(findLos(lo.los, lotype))
+        elif isinstance(lo, Unit):
+            result = result.append(findLos(lo.los, lotype))
     return result
 
 def findTalksWithVideos(los, lotype):
