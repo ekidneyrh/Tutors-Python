@@ -91,7 +91,7 @@ def findTalksWithVideos(los):
             if talk.videoid is not 'none':
                 result.append(lo)
         if isinstance(los, Topic):
-            result = result.(findTalksWithVideos(lo.los))
+            result = result.append(findTalksWithVideos(lo.los))
     return result
 
 def publishLos(string, los):
