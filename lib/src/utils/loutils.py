@@ -94,10 +94,10 @@ def findTalksWithVideos(los):
             result = result.append(findTalksWithVideos(lo.los))
     return result
 
-def publishLos(string, los):
+def publishLos(path, los):
     for lo in los:
         logging.info(' -->', lo.title)
-        los.append(lo)
+        lo.publish(path)
 
 def copyResource():
     dest = dest + '/' + src 
