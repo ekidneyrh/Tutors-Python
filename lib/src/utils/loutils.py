@@ -99,12 +99,12 @@ def publishLos(path, los):
         logging.info(' -->', lo.title)
         lo.publish(path)
 
-def copyResource():
+def copyResource(src, dest):
     dest = dest + '/' + src 
     os.mkdir('-p', dest)
-    copyfile('-rf', src + '/*.pdf', dest)
-    copyfile('-rf', src + '/*.zip', dest)
-    copyfile('-rf', src + '/*.png', dest)
-    copyfile('-rf', src + '/*.jpg', dest)
-    copyfile('-rf', src + '/*.jpeg', dest)
-    copyfile('-rf', src + '/*.gif', dest)
+    shutil.copyfile('-rf', src + '/*.pdf', dest)
+    shutil.copyfile('-rf', src + '/*.zip', dest)
+    shutil.copyfile('-rf', src + '/*.png', dest)
+    shutil.copyfile('-rf', src + '/*.jpg', dest)
+    shutil.copyfile('-rf', src + '/*.jpeg', dest)
+    shutil.copyfile('-rf', src + '/*.gif', dest)
