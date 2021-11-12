@@ -54,14 +54,14 @@ def reapLos(LearningObject):
     return los
     
 def reapLoType(pattern, parent, locreator):
-    folders = glob.sync(pattern).sort()
+    los = list()
+    folders = sorted(glob.sync(pattern))
     for folder in folders:
         if (os.path.isdir(stat.S_IFLNK(folder))):
             os.chdir(folder)
             lo = locreator(parent)
             los.append(lo)
             os.chdir('..')
-
     return los
 
 def findTopLos(los, lotype):
