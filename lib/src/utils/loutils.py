@@ -64,11 +64,12 @@ def reapLoType(pattern, parent, locreator):
             os.chdir('..')
     return los
 
-def findTopLos(los, lotype):
-    for lo in los: 
-        if lo.lotype == lotype:
-            los.append(lo)
-    return los
+def findTopLos(los, objType):
+    result = list()
+    for object in los: 
+        if object.lotype is objType:
+            result.append(object)
+    return result
 
 def findLos(los, lotype):
     for lo in los:
