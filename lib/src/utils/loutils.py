@@ -1,10 +1,13 @@
 import os 
 import stat 
 import glob
-import logging
-from shutil import copyfile
-from models.topic import Topic
-from models.lo import LearningObject as los
+import shutil
+from models.lab import Lab as lab
+from models.topic import Topic, Unit
+from models.lo import LearningObject as lo
+from models.course import Course as course
+from models.los import Archive, PanelTalk, Talk
+from models.weblos import Git, PanelVideo, Video, Web
 
 
 def reapLos(LearningObject):
