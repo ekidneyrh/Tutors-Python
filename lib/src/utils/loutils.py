@@ -1,10 +1,14 @@
 import os 
 import stat 
 import glob
+import shutil
 import logging
-from shutil import copyfile
-from models.topic import Topic
-from models.lo import LearningObject as los
+from models.lab import Lab
+from models.topic import Topic, Unit
+from models.lo import LearningObject
+from models.course import Course
+from models.los import Archive, PanelTalk, Talk
+from models.weblos import Git, PanelVideo, Video, Web
 
 
 def reapLos(LearningObject):
@@ -51,53 +55,56 @@ def reapLos(LearningObject):
     return los
     
 def reapLoType(pattern, parent, locreator):
-    folders = glob.sync(pattern).sort()
+    los = list()
+    folders = sorted(glob.sync(pattern))
     for folder in folders:
         if (os.path.isdir(stat.S_IFLNK(folder))):
             os.chdir(folder)
             lo = locreator(parent)
             los.append(lo)
             os.chdir('..')
-
     return los
 
-def findTopLos(los, lotype):
-    for lo in los: 
-        if lo.lotype == lotype:
-            los.append(lo)
-    return los
+def findTopLos(los, objType):
+    result = list()
+    for object in los: 
+        if object.lotype is objType:
+            result.append(object)
+    return result
 
 def findLos(los, lotype):
+    result = list()
     for lo in los:
-        if lo.lotype == lotype:
-            los.append(lo)
-        elif isinstance(Topic, lo):
-            result = result.concat(findLos(lo.los, lotype))
-        elif isinstance(Unit, lo):
-            result = result.concat(findLos(lo.los, lotype))
+        if lo.lotype is lotype:
+            result.append(lo)
+        elif isinstance(lo, Topic):
+            result = result.append(findLos(lo.los, lotype))
+        elif isinstance(lo, Unit):
+            result = result.append(findLos(lo.los, lotype))
     return result
 
-def findTalksWithVideos(los, lotype):
+def findTalksWithVideos(los):
+    result = list()
     for lo in los:
-        if lo.type == 'talk':
-            talk = lo.Talk
-            if talk.videoid != 'none':
-                los.append(lo)
-        if isinstance(Topic, los):
-            result = result.concat(findTalksWithVideos(lo.los))
+        if lo.lotype is 'talk':
+            talk = lo
+            if talk.videoid is not 'none':
+                result.append(lo)
+        if isinstance(los, Topic):
+            result = result.append(findTalksWithVideos(lo.los))
     return result
 
-def publishLos(string, los):
+def publishLos(path, los):
     for lo in los:
         logging.info(' -->', lo.title)
-        los.append(lo)
+        lo.publish(path)
 
-def copyResource():
+def copyResource(src, dest):
     dest = dest + '/' + src 
     os.mkdir('-p', dest)
-    copyfile('-rf', src + '/*.pdf', dest)
-    copyfile('-rf', src + '/*.zip', dest)
-    copyfile('-rf', src + '/*.png', dest)
-    copyfile('-rf', src + '/*.jpg', dest)
-    copyfile('-rf', src + '/*.jpeg', dest)
-    copyfile('-rf', src + '/*.gif', dest)
+    shutil.copyfile('-rf', src + '/*.pdf', dest)
+    shutil.copyfile('-rf', src + '/*.zip', dest)
+    shutil.copyfile('-rf', src + '/*.png', dest)
+    shutil.copyfile('-rf', src + '/*.jpg', dest)
+    shutil.copyfile('-rf', src + '/*.jpeg', dest)
+    shutil.copyfile('-rf', src + '/*.gif', dest)
