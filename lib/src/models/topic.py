@@ -45,3 +45,12 @@ class Topic(LearningObject):
        utils.futils.copyFileToFolder(self.img, topicPath) # Look into !
        # Missing publishLos
        os.chdir('..')
+
+class Unit(Topic):
+    los = list()
+    def __init__(self):
+        super().__init__(self)
+        self.lotype = "unit"
+        self.standardLos = filter(lambda lo: (lo.lotype is not "panelvideo"), self.los)
+
+
